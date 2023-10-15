@@ -159,7 +159,7 @@ class BlinkCamera extends BlinkDevice {
     }
 
     get online() {
-        return ['online', 'done'].includes(this.data.status) && (this.isCameraMini || this.network.online);
+        return ['online', 'done'].includes(this.data.status) && (this.isCameraMini || this.isCameraDoorbell || this.network.online);
     }
 
     get armed() {
@@ -553,9 +553,7 @@ class Blink {
                 await anonymize(this.blinkAPI.getOwlConfig(owl.network_id, owl.id));
                 log('getOwlMotionRegions()');
                 await anonymize(this.blinkAPI.getCameraMotionRegions(owl.network_id, owl.id));
-                log('getOwlSignals()');
-                await anonymize(this.blinkAPI.getCameraSignals(owl.network_id, owl.id));
-                log('getOwlStatus()');
+                log('getCameraStatus()');
                 await anonymize(this.blinkAPI.getCameraStatus(owl.network_id, owl.id, 0));
                 log('getOwlFirmware()');
                 await anonymize(this.blinkAPI.getOwlFirmware(owl.serial));
@@ -570,12 +568,10 @@ class Blink {
                 await anonymize(this.blinkAPI.getDoorbellConfig(doorbell.network_id, doorbell .id));
                 log('getDoorbellMotionRegions()');
                 await anonymize(this.blinkAPI.getDoorbellMotionRegions(doorbell.network_id, doorbell.id));
-                log('getDoorbellSignals()');
-                await anonymize(this.blinkAPI.getDoorbellSignals(doorbell.network_id, doorbell.id));
-                log('getDoorbellStatus()');
-                await anonymize(this.blinkAPI.getDoorbellStatus(doorbell.network_id, doorbell.id, 0));
                 log('getDoorbellFirmware()');
                 await anonymize(this.blinkAPI.getDoorbellFirmware(doorbell.serial));
+                log('getCameraStatus()');
+                await anonymize(this.blinkAPI.getCameraStatus(doorbell.network_id, doorbell.id, 0));
                 log('getDevice()');
                 await anonymize(this.blinkAPI.getDevice(doorbell.serial));
                 // log('getOwlLiveView()');
@@ -682,6 +678,7 @@ class Blink {
         const camera = this.cameras.get(cameraID);
         let cmd = enabled ? this.blinkAPI.enableCameraMotion : await this.blinkAPI.disableCameraMotion;
         if (camera.isCameraMini) cmd = this.blinkAPI.updateOwlSettings;
+        if (camera.isCameraDoorbell) cmd = this.blinkAPI.updateDoorbellSettings;
 
         const updateCameraPromise = async () => cmd.call(this.blinkAPI, networkID, cameraID, {enabled: enabled});
         const commandPromise = async () => await this._command(networkID, updateCameraPromise);
@@ -715,6 +712,7 @@ class Blink {
                 log(`${camera.name} - Refreshing snapshot`);
                 let updateCamera = this.blinkAPI.updateCameraThumbnail;
                 if (camera.isCameraMini) updateCamera = this.blinkAPI.updateOwlThumbnail;
+                if (camera.isCameraDoorbell) updateCamera = this.blinkAPI.updateDoorbellThumbnail;
 
                 // this is an overly complicated nesting, but we have the tree of:
                 // lock --> update camera --> poll command
@@ -747,7 +745,8 @@ class Blink {
             const lastSnapshot = Date.parse(lastMedia.created_at) + (this.snapshotRate * 1000);
             if (force || (camera.armed && camera.enabled && Date.now() >= lastSnapshot)) {
                 log(`${camera.name} - Refreshing clip`);
-                const cmd = async () => await this.blinkAPI.updateCameraClip(camera.networkID, camera.cameraID);
+                const updateClip = camera.isCameraDoorbell ? this.blinkAPI.updateDoorbellClip : this.blinkAPI.updateCameraClip
+                const cmd = async () => await updateClip(camera.networkID, camera.cameraID);
                 await this._command(camera.networkID, cmd);
 
                 return true; // we updated a camera
@@ -786,6 +785,8 @@ class Blink {
         const camera = this.cameras.get(cameraID);
         if (camera.isCameraMini) {
             return await this.blinkAPI.getOwlConfig(networkID, cameraID, maxTTL);
+        } else if (camera.isCameraDoorBell) {
+            return await this.blinkAPI.getDoorbellConfig(networkID, cameraID, maxTTL);
         }
         return await this.blinkAPI.getCameraStatus(networkID, cameraID, maxTTL);
     }
@@ -832,6 +833,7 @@ class Blink {
 
         let cmd = this.blinkAPI.getCameraLiveViewV5;
         if (camera.isCameraMini) cmd = this.blinkAPI.getOwlLiveView;
+        if (camera.isCameraDoorbell) cmd = this.blinkAPI.getDoorbellLiveView;
 
         return await this._command(networkID, () => cmd.call(this.blinkAPI, networkID, cameraID), timeout);
     }

@@ -962,7 +962,7 @@ class BlinkAPI {
     // }
 
     async getCameraMotionRegions(networkID, cameraID) {
-        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/cameras/${cameraID}/motion_regions`);
+        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/cameras/${cameraID}/zones`);
     }
 
     /**
@@ -1088,7 +1088,7 @@ class BlinkAPI {
     }
 
     async updateCameraMotionRegions(networkID, cameraID, motionRegions) {
-        return await this.post(`/api/v1/accounts/{accountID}/networks/${networkID}/cameras/${cameraID}/motion_regions`,
+        return await this.post(`/api/v1/accounts/{accountID}/networks/${networkID}/cameras/${cameraID}/zones`,
             motionRegions);
     }
 
@@ -1098,13 +1098,6 @@ class BlinkAPI {
 
     async enableCameraTempAlert(networkID, cameraID) {
         return await this.post(`/api/v1/network/${networkID}/camera/${cameraID}/temp_alert_enable`);
-    }
-
-    /**
-     * see: SAMPLE.CAMERA_SIGNALS
-     */
-    async getCameraSignals(networkID, cameraID) {
-        return await this.get(`/network/${networkID}/camera/${cameraID}/signals`);
     }
 
     /**
@@ -1323,20 +1316,28 @@ class BlinkAPI {
         return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/config`);
     }
 
-    async getDoorbellStatus(networkID, cameraID, maxTTL = 60 * 60) {
-        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}`, maxTTL);
-    }
-
     async getDoorbellMotionRegions(networkID, cameraID) {
-        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/motion_regions`);
-    }
-
-    async getDoorbellSignals(networkID, cameraID) {
-        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/signals`);
+        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/zones`);
     }
 
     async getDoorbellFirmware(serial) {
         return await this.get(`/api/v1/accounts/{accountID}/doorbells/${serial}/fw_update`);
+    }
+
+    async getDoorbellLiveView(networkID, cameraID) {
+        const data = {
+            'intent': 'liveview',
+            'motion_event_start_time': '',
+        };
+        return await this.post(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/liveview`, data);
+    }
+
+    async updateDoorbellThumbnail(networkID, cameraID) {
+        return await this.post(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/thumbnail`);
+    }
+
+    async updateDoorbellClip(networkID, cameraID) {
+        return await this.post(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/clip`);
     }
 }
 
