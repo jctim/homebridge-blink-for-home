@@ -1314,6 +1314,14 @@ class BlinkAPI {
     async getAppStatus(serial) {
         return await this.get(`/api/v1/fw/app/update_check?serial=${serial}`);
     }
+
+    /**
+     * DOORBELL
+     */
+
+    async getDoorbellConfig(networkID, cameraID) {
+        return await this.get(`/network/${networkID}/lotus/${cameraID}/config`); //lotus
+    }
 }
 
 module.exports = BlinkAPI;
