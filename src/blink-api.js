@@ -252,11 +252,11 @@ class BlinkAPI {
         }
 
         const headers = {
-            'User-Agent': 'Blink/2210101952 CFNetwork/1399 Darwin/22.1.0',
-            'app-build': 'IOS_2210101952',
-            'Locale': 'en_US',
-            'x-blink-time-zone': 'America/New York',
-            'accept-language': 'en_US',
+            'User-Agent': 'Blink/2310051512 CFNetwork/1483 Darwin/23.1.0',
+            'app-build': 'IOS_2310051512',
+            'Locale': 'en_NL',
+            'x-blink-time-zone': 'Europe/Amsterdam',
+            'accept-language': 'en-NL',
             'Accept': '*/*',
         };
         if (this.token) headers['TOKEN_AUTH'] = this.token;
