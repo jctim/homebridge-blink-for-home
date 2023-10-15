@@ -1320,7 +1320,7 @@ class BlinkAPI {
      */
 
     async getDoorbellConfig(networkID, cameraID) {
-        return await this.get(`/network/${networkID}/lotus/${cameraID}/config`); //lotus
+        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/config`);
     }
 }
 
