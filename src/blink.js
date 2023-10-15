@@ -568,16 +568,16 @@ class Blink {
             for (const doorbell of homescreen.doorbells) {
                 log('getDoorbellConfig()');
                 await anonymize(this.blinkAPI.getDoorbellConfig(doorbell.network_id, doorbell .id));
-//                log('getOwlMotionRegions()');
-//                await anonymize(this.blinkAPI.getCameraMotionRegions(owl.network_id, owl.id));
-//                log('getOwlSignals()');
-//                await anonymize(this.blinkAPI.getCameraSignals(owl.network_id, owl.id));
-//                log('getOwlStatus()');
-//                await anonymize(this.blinkAPI.getCameraStatus(owl.network_id, owl.id, 0));
-//                log('getOwlFirmware()');
-//                await anonymize(this.blinkAPI.getOwlFirmware(owl.serial));
-//                log('getDevice()');
-//                await anonymize(this.blinkAPI.getDevice(owl.serial));
+                log('getDoorbellMotionRegions()');
+                await anonymize(this.blinkAPI.getDoorbellMotionRegions(owl.network_id, owl.id));
+                log('getDoorbellSignals()');
+                await anonymize(this.blinkAPI.getDoorbellSignals(owl.network_id, owl.id));
+                log('getDoorbellStatus()');
+                await anonymize(this.blinkAPI.getDoorbellStatus(owl.network_id, owl.id, 0));
+                log('getDoorbellFirmware()');
+                await anonymize(this.blinkAPI.getDoorbellFirmware(owl.serial));
+                log('getDevice()');
+                await anonymize(this.blinkAPI.getDevice(owl.serial));
                 // log('getOwlLiveView()');
                 // await anonymize(this.blinkAPI.getOwlLiveView()));
             }

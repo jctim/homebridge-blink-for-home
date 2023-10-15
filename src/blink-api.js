@@ -1322,6 +1322,22 @@ class BlinkAPI {
     async getDoorbellConfig(networkID, cameraID) {
         return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/config`);
     }
+
+    async getDoorbellStatus(networkID, cameraID, maxTTL = 60 * 60) {
+        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}`, maxTTL);
+    }
+
+    async getDoorbellMotionRegions(networkID, cameraID) {
+        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/motion_regions`);
+    }
+
+    async getDoorbellSignals(networkID, cameraID) {
+        return await this.get(`/api/v1/accounts/{accountID}/networks/${networkID}/doorbells/${cameraID}/signals`);
+    }
+
+    async getDoorbellFirmware(serial) {
+        return await this.get(`/api/v1/accounts/{accountID}/doorbells/${serial}/fw_update`);
+    }
 }
 
 module.exports = BlinkAPI;
