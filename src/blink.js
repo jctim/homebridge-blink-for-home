@@ -575,7 +575,7 @@ class Blink {
                 log('getDevice()');
                 await anonymize(this.blinkAPI.getDevice(doorbell.serial));
                  log('getDoorbellLiveView()');
-                 await anonymize(this.blinkAPI.getDoorbellLiveView());
+                 await anonymize(this.blinkAPI.getDoorbellLiveView(doorbell.network_id, doorbell.id));
             }
         }
 
