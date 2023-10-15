@@ -509,13 +509,13 @@ class Blink {
             //log('getBlinkStatus()');
             //await anonymize(this.blinkAPI.getBlinkStatus()); -- Fails
             //log('getBlinkSupport()');
-            //await anonymize(this.blinkAPI.getBlinkSupport());
+            //await anonymize(this.blinkAPI.getBlinkSupport()); -- Not tested
             log('getClientOptions()');
             await anonymize(this.blinkAPI.getClientOptions());
             log('getNetworks()');
             await anonymize(this.blinkAPI.getNetworks());
-            log('getSirens()');
-            await anonymize(this.blinkAPI.getSirens());
+            //log('getSirens()');
+            //await anonymize(this.blinkAPI.getSirens()); -- Fails
             log('getCameraUsage()');
             await anonymize(this.blinkAPI.getCameraUsage());
 
