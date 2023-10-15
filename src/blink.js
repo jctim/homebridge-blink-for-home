@@ -570,12 +570,12 @@ class Blink {
                 await anonymize(this.blinkAPI.getDoorbellMotionRegions(doorbell.network_id, doorbell.id));
                 log('getDoorbellFirmware()');
                 await anonymize(this.blinkAPI.getDoorbellFirmware(doorbell.serial));
-                log('getCameraStatus()');
-                await anonymize(this.blinkAPI.getCameraStatus(doorbell.network_id, doorbell.id, 0));
+                // log('getCameraStatus()');
+                // await anonymize(this.blinkAPI.getCameraStatus(doorbell.network_id, doorbell.id, 0)); - Fails
                 log('getDevice()');
                 await anonymize(this.blinkAPI.getDevice(doorbell.serial));
-                // log('getOwlLiveView()');
-                // await anonymize(this.blinkAPI.getOwlLiveView()));
+                 log('getDoorbellLiveView()');
+                 await anonymize(this.blinkAPI.getDoorbellLiveView()));
             }
         }
 
